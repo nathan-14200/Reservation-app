@@ -3,9 +3,9 @@
 	
 	<div class="row">
 		<div class="col-md-8">
-			<form method="post" action="Views/reservation.php" class="container">
-				<button id"=new-reservation" type="submit" class="btn btn-primary big" name="new">
-					New reservation
+			<form method="post" action="index.php" class="container">
+				<button type="submit" class="btn btn-primary big" name="new" id="new">
+					<label for="new">New reservation</label>
 					<?php
 					
 					?>
@@ -13,5 +13,5 @@
 			</form>
 		</div>
 	</div>
-	
+</div>
 // get: variable publique, post : variable privée

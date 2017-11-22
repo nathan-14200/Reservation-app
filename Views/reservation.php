@@ -1,26 +1,30 @@
 <div id="new-reservation">
 	<h1 class="row">New Reservation</h1>
-		<div class="col-md-6
-			<?php
-			if(isset($_SESSION['destinationError']))
-				echo $_POST['destinationError'];
-			?>
-			<form method="post" action="router.php">
+		<div class="col-md-6">
+			
+			
+			<form method="post" action="index.php">
 				Destination: <input type="text" name = "destination"><br>
-				Number of passengers: <input type="text" name = "num"><br>
-				<input type="checkbox" name="insurance" id="insurance" /> <label for="insurance">Cancellation insurance</label>
-				<input type="hidden" name ="page" value = "destination">
+				Number of passengers:	<select name="num">
+											<option value="1"> 1 </option>
+											<option value="2"> 2 </option>
+											<option value="3"> 3 </option>
+											<option value="4"> 4 </option>
+											<option value="5"> 5 </option>
+											<option value="6"> 6 </option>
+											<option value="7"> 7 </option>
+											<option value="8"> 8 </option>
+											<option value="9"> 9 </option>
+											<option value="10"> 10 </option>
+										</select><br>
+				<input type="checkbox" name="insurance" id="insurance" /> 
+				<label for="insurance">Cancellation insurance</label>
 				
-				<button id = "destination" type="submit" class="btn btn-primary big" name="destination">
+				<button id = "res" name = "res" type="submit" class="btn btn-primary big">
 				Submit
 				</button>
+				
 			</form>
 		</div>
-		<?php
 		
-		
-		
-		
-		
-		?>
 </div>
