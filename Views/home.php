@@ -11,6 +11,11 @@
 					?>
 				</button>
 			</form>
+			
+			<?php
+			
+			?>
+			
 		</div>
 	</div>
 </div>

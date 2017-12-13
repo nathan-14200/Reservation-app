@@ -4,10 +4,12 @@
 //				nombre = inte
 //				assurance = bool
 $l = $_POST;
+echo('in controler');
 if(isset(l['destination'] && isset(l['num']) && isset(l['page']){
 	$destination = htmlspecialchars(l['destination']);
 	$num = htmlspecialchars(l['num']);
 	$insurance = isset(l['insurance']);	
+	echo('in');
 	include '../test.php';
 }
 else{

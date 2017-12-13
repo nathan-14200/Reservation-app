@@ -17,6 +17,13 @@ class Controler
 		{
 			$this->passenger();
 		}
+		elseif(isset($_POST['validate'])){
+			$this->validate();
+		}
+		elseif(isset($_POST['destroy']))
+		{
+			$this->destroy();
+		}
 		
 		else
 		{
@@ -28,6 +35,12 @@ class Controler
 	
 	private function home()
 	{
+		$mysqli = new mysqli("localhost", "root", "", "reservation_data" ) or
+		die("Could not connect to database");
+		$query_res = "SELECT * FROM reservation";
+		$data_res = $mysqli->query($query_res);
+		$query_pas = "SELECT * FROM passenger";
+		$data_pas = $mysqli->query($query_pas);
 		include'Views/home.php';
 	}
 	
@@ -78,33 +91,49 @@ class Controler
 	
 	private function passenger()
 	{
-		$res = unserialize($_SESSION['res']);
-		$i =  $res -> get_ID();
-		while($i>0)
+		//error counter back to zero
+		if(isset($_SESSION['error']['passenger']))
 		{
-			
+			$error = $_SESSION['error']['passenger'];
+			unset($error);
+		}
 		
-			if(isset($_POST['name']) && isset($_POST['age']))
+		$res = unserialize($_SESSION['res']);
+		
+		$num = $res-> get_num();
+		
+		if(isset($_POST['firstname']) && isset($_POST['age']) && isset($_POST['lastname']))
+		{
+			$firstname = $_POST['firstname'];
+			$lastname = $_POST['lastname'];
+			$age = $_POST['age'];
+		
+			if(is_numeric($age) && is_string($firstname) && is_string($lastname))
 			{
-				$name = $_POST['name'];
-				$age = $_POST['age'];
-			
-				if(is_numeric($age) && is_string($name))
+				$p = new passenger($firstname, $lastname, $age);
+				$res -> add_passenger($p);
+				
+				$num -= 1;
+				$res->set_num($num);
+				
+				$_SESSION['res'] = serialize($res);
+				
+				if($num >= 1)
 				{
-					$p = new passenger($name, $age);
-					$res -> add_passenger($p);
-					$i -= 1;
-					$res->set_num($i);
+					include 'Views/passenger.php';
+				}
+				else{
+					include 'Views/recap.php';
 				}
 			}
 			else{
-				$_SESSION['error']['pas'] = "wrong input for the passenger";
-				include 'Views/passenger.php';
+				$this->error_passenger();
 			}
 		}
+		else{
+			$this->error_passenger();
+		}
 		
-		$_SESSION['res'] = serialize($res);
-		include 'Views/recap.php';
 		//Doit etre charger le meme nombre de fois que de passagers indiqués
 		//Verifie que les valeurs données sont correctes sinon renvoie la page
 		// Renvoie la vue passenger sinon passe au résumé de la reservation
@@ -114,6 +143,66 @@ class Controler
 	private function recap()
 	{
 		include 'Views/recap.php';
+	}
+	
+	
+	private function validate()
+	{
+		//Enregistrer les données en MySQL
+		$mysqli = new mysqli("localhost", "root", "", "reservation_data" ) or
+		die("Could not connect to database");
+		$res = unserialize($_SESSION['res']);
+		$pas_list = $res->get_passengers();
+		//Set reservation
+		$destination = $res->get_destination();
+		$insurance = $res->get_insurance();
+		$queryres = "INSERT INTO reservation(destination, insurance)
+		VALUES('$destination', '$insurance')";
+		
+		if($mysqli->query($queryres) == TRUE)
+			{
+				echo "Successfully added";
+			}
+		else{
+			echo"Error insert destination " . $mysqli->error;
+		}
+		
+		//Get id from reservation
+		$id_res = $mysqli->insert_id;
+		
+		//Set passengers in database
+		foreach($pas_list as $pas)
+		{
+			$firstname = $pas->get_firstname();
+			$lastname = $pas->get_lastname();
+			$age = $pas->get_age();
+			$querypas = "INSERT INTO passenger ( id_res, firstname, lastname, age)
+			VALUES($id_res, '$firstname', '$lastname', $age)";
+			
+			if($mysqli->query($querypas) == TRUE)
+			{
+				echo "Successfully added";
+			}
+			else{
+				echo"Error insert passenger " . $mysqli->error;
+			}
+		}
+	
+	$mysqli->close();	
+	$this->home();
+	}
+	
+	
+	private function error_passenger()
+	{
+		$_SESSION['error']['passenger'] = "wrong input for the passenger";
+		include 'Views/passenger.php';
+	}
+	
+	private function destroy()
+	{
+		session_destroy();
+		$this->home();
 	}
 	
 }
