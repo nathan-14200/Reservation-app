@@ -1,10 +1,14 @@
 <?php
-	var_dump($_POST);
-	
 	session_start();
 	var_dump($_SESSION);
-	include_once 'Controlers/controler.php';
 	
-	$controler = new Controler();
-	$controler->route();
+	if(!empty($_POST['page']) && is_file('Controlers/controler_'.$_POST['page'].'.php'))
+	{
+		echo("in it");
+		include 'Controlers/controler_'.$_POST['page'].'.php';
+	}
+	else{
+		echo("in other");
+		include('Controlers/controler_home.php');
+	}
 ?>

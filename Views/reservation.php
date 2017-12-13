@@ -20,7 +20,7 @@
 				<input type="checkbox" name="insurance" id="insurance" /> 
 				<label for="insurance">Cancellation insurance</label>
 				
-				<button id = "res" name = "res" type="submit" class="btn btn-primary big">
+				<button name = "page" value = "destination" type="submit" class="btn btn-primary big">
 				Submit
 				</button>
 				

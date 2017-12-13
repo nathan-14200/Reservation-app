@@ -24,10 +24,10 @@
 			?>
 			<br>
 			<form method="post" action="index.php">
-				<button id = "validate" name = "validate" type="submit" class="btn btn-primary big">
+				<button name = "page" value = 'validate' type="submit" class="btn btn-primary big">
 				Validate
 				</button>
-				<button id = "destroy" name = "destroy" type="submit" class="btn btn-primary big">
+				<button name = "page" type="submit" class="btn btn-primary big">
 				Cancel
 				</button>
 			</form>

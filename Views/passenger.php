@@ -19,7 +19,7 @@
 				<label for="age">Age:</label> 
 				<input type="text" name = "age"><br>
 				
-				<button id = "passenger" name = "passenger" type="submit" class="btn btn-primary big">
+				<button name = "page" value = "passenger" type="submit" class="btn btn-primary big">
 				Submit
 				</button>
 			</form>

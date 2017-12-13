@@ -3,23 +3,40 @@
 //				destination = string
 //				nombre = inte
 //				assurance = bool
-$l = $_POST;
-echo('in controler');
-if(isset(l['destination'] && isset(l['num']) && isset(l['page']){
-	$destination = htmlspecialchars(l['destination']);
-	$num = htmlspecialchars(l['num']);
-	$insurance = isset(l['insurance']);	
-	echo('in');
-	include '../test.php';
+include_once'Models/model_reservation.php';
+
+if($_POST['page'] == 'destination' && isset($_POST['destination']) && isset($_POST['num']))
+{	
+	$num = $_POST['num'];
+		$destination = $_POST['destination'];
+		
+	if(isset($_POST['insurance']))
+	{
+		$insurance = 'oui';
+	}
+	else
+	{
+		$insurance = 'non';
+	}
+		
+	if(is_numeric($num) && $num >= 1 && $num <=10 && is_string($destination))
+	{
+		$num = (int)$num;
+		$destination = (string) $destination;
+		$insurance = (string) $insurance;
+		
+		$res = new reservation($destination, $num, $insurance);
+		$_SESSION['res'] = serialize($res);
+		//Enregistrer la res dans la session en fonction de son ID
+		include'Views/passenger.php';
+	}
+			
+	else
+	{
+		include'Views/reservation.php';;
+	}
 }
 else{
-	error();
-}
-	
-	
-function error(){
-	$message = "Please enter a number between 1 and 10 included"
-	$_SESSION['destinationError'] = message;
-	include '../Views/reservation.php';
+	include'Views/reservation.php';;
 }
 ?>

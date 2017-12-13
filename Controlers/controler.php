@@ -41,6 +41,31 @@ class Controler
 		$data_res = $mysqli->query($query_res);
 		$query_pas = "SELECT * FROM passenger";
 		$data_pas = $mysqli->query($query_pas);
+		$res_array = [];
+		$pas_array = [];
+		
+		while($row = $data_res->fetch_assoc())
+		{
+			$array = [];
+			array_push($array, $row["id"]);
+			array_push($array, $row["destination"]);
+			array_push($array, $row["insurance"]);
+			
+			array_push($res_array, $array);
+			
+		}
+		while($r = $data_pas->fetch_assoc())
+		{
+			$array = [];
+			array_push($array, $row["id"]);
+			array_push($array, $row["firstname"]);
+			array_push($array, $row["lastname"]);
+			array_push($array, $row["age"]);
+			array_push($array, $row["id_res"]);
+			
+			array_push($pas_array, $array);
+		}
+		
 		include'Views/home.php';
 	}
 	
